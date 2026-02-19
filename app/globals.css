@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════
+   신당(神堂) 디자인 토큰 — 한국 전통 무속/한지 미학
+   ══════════════════════════════════════════════════════════ */
+@theme {
+  /* 배경 — 옻칠 나무 / 신당 바닥 느낌의 따뜻한 어두운 갈적색 */
+  --color-ink:       #1A0804;   /* 최심층 — 옻칠 바닥 */
+  --color-surface:   #2D1208;   /* 카드/패널 — 적갈색 나무 */
+  --color-surface-2: #401A0C;   /* 호버/강조 레이어 */
+
+  /* 단청 오방색 (五方色) */
+  --color-crimson:       #B22222;   /* 주홍(朱紅) — CTA, 무당 붉은 기운 */
+  --color-crimson-light: #CC3333;
+  --color-gold:          #C9952A;   /* 황토(黃土) — 강조, 테두리 */
+  --color-gold-light:    #D4AF37;
+  --color-jade:          #2D6B5A;   /* 녹청(綠靑) — 오행 목·수 */
+
+  /* 한지 / 텍스트 */
+  --color-paper: #F0E2C4;   /* 한지 크림 — 본문 텍스트 */
+  --color-mist:  #9B8060;   /* 따뜻한 갈색 — 서브 텍스트 */
+
+  /* 오행 — 전통 단청 배색 */
+  --color-wood:  #2D6B5A;   /* 목(木) 녹청 */
+  --color-fire:  #B22222;   /* 화(火) 주홍 */
+  --color-earth: #C9952A;   /* 토(土) 황토 */
+  --color-metal: #9BA8B4;   /* 금(金) 백청 */
+  --color-water: #1B4F8A;   /* 수(水) 군청 */
+
+  /* 폰트 */
+  --font-serif: "Noto Serif KR", "Apple SD Gothic Neo", Georgia, serif;
+  --font-sans:  "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+}
+
+/* ── 전역 기반 ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════════════════════════
+   창살(窓살) 배경 — 전통 한국 창문 격자 패턴
+   ══════════════════════════════════════════════════════════ */
+.bg-trigram {
+  background-color: #1A0804;
+  background-image:
+    /* 가는 격자 */
+    linear-gradient(rgba(178, 34, 34, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(178, 34, 34, 0.06) 1px, transparent 1px),
+    /* 큰 격자 (창살 칸) */
+    linear-gradient(rgba(201, 149, 42, 0.05) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(201, 149, 42, 0.05) 2px, transparent 2px);
+  background-size: 30px 30px, 30px 30px, 90px 90px, 90px 90px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   안개 / 연기 레이어 — 신당 촛불 연기
+   ══════════════════════════════════════════════════════════ */
+.mist-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%,   rgba(178, 34, 34, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 20% 100%,  rgba(201, 149, 42, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 80% 100%,  rgba(201, 149, 42, 0.06) 0%, transparent 55%);
+  animation: shrine-breath 10s ease-in-out infinite alternate;
+}
+
+@keyframes shrine-breath {
+  0%   { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   신당 카드 — 단청 테두리 / 옻칠 나무 느낌
+   ══════════════════════════════════════════════════════════ */
+.card-gold {
+  background: linear-gradient(160deg, #351610 0%, #2A1208 60%, #321510 100%);
+  border: 1px solid rgba(178, 34, 34, 0.35);
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 0 1px rgba(201, 149, 42, 0.12) inset,
+    0 4px 24px rgba(0, 0, 0, 0.7),
+    0 1px 0 rgba(201, 149, 42, 0.2) inset;
+  position: relative;
+}
+
+.card-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ── 한지(韓紙) 카드 — 밝은 한지 위에 먹으로 쓴 느낌 ── */
+.card-hanji {
+  background: linear-gradient(160deg, #F5ECD5 0%, #EDD9B0 50%, #F5ECD5 100%);
+  border: 1px solid #C8B888;
+  border-top: 3px solid #B22222;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 0 rgba(0,0,0,0.25),
+    0 4px 20px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 0 40px rgba(178,34,34,0.04);
+  position: relative;
+}
+
+.card-hanji::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   위패(位牌) — 사주 기둥 세로 카드 (혼패 / 제위 스타일)
+   ══════════════════════════════════════════════════════════ */
+.pillar-tablet {
+  background: linear-gradient(180deg, #F8EED8 0%, #EDD9B0 50%, #F8EED8 100%);
+  border-left: 1px solid #C8B888;
+  border-right: 1px solid #C8B888;
+  border-bottom: 2px solid #8B1717;
+  border-top: none;
+  position: relative;
+}
+
+/* 위패 상단 단청 머리 */
+.pillar-tablet-cap {
+  background: linear-gradient(135deg, #8B1717 0%, #B22222 50%, #8B1717 100%);
+  border-radius: 2px 2px 0 0;
+  height: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* ══════════════════════════════════════════════════════════
+   촛불 애니메이션
+   ══════════════════════════════════════════════════════════ */
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1) scaleX(1) rotate(0deg); opacity: 1; }
+  20%       { transform: scaleY(1.06) scaleX(0.94) rotate(-1deg); opacity: 0.96; }
+  40%       { transform: scaleY(0.94) scaleX(1.06) rotate(1deg); opacity: 0.92; }
+  60%       { transform: scaleY(1.08) scaleX(0.96) rotate(-0.5deg); opacity: 0.97; }
+  80%       { transform: scaleY(0.97) scaleX(1.03) rotate(0.5deg); opacity: 0.94; }
+}
+
+.flame-flicker {
+  animation: flicker 1.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* ══════════════════════════════════════════════════════════
+   신장기(神將旗) — 신당 깃발 흔들림
+   ══════════════════════════════════════════════════════════ */
+@keyframes sway {
+  0%, 100% { transform: rotate(-2.5deg) skewX(-0.5deg); }
+  50%       { transform: rotate(2.5deg) skewX(0.5deg); }
+}
+
+.spirit-flag {
+  animation: sway 3.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* ══════════════════════════════════════════════════════════
+   붓 글씨 / 강조 텍스트
+   ══════════════════════════════════════════════════════════ */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C9952A 0%, #D4AF37 40%, #F0C84A 60%, #C9952A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-hanji {
+  color: #1C1208;
+  font-family: var(--font-serif);
+}
+
+/* ══════════════════════════════════════════════════════════
+   구분선 — 붉은 실 / 먹 번짐
+   ══════════════════════════════════════════════════════════ */
+.divider-thread {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #B22222 20%, #C9952A 50%, #B22222 80%, transparent 100%);
+  opacity: 0.5;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   부적(符籍) 인장 — 붉은 테두리 도장
+   ══════════════════════════════════════════════════════════ */
+.seal {
+  border: 2px solid var(--color-crimson);
+  color: var(--color-crimson);
+  font-family: var(--font-serif);
+  transform: rotate(-8deg);
+  opacity: 0.85;
+  box-shadow:
+    0 0 0 1px rgba(178,34,34,0.3) inset,
+    0 0 12px rgba(178,34,34,0.25),
+    2px 2px 0 rgba(139,23,23,0.4);
+}
+
+/* ══════════════════════════════════════════════════════════
+   두루마리 등장 — 족자(簇子) 펼치기
+   ══════════════════════════════════════════════════════════ */
+@keyframes scroll-unfurl {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.unfurl { animation: scroll-unfurl 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* ══════════════════════════════════════════════════════════
+   스크롤바
+   ══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #1A0804; }
+::-webkit-scrollbar-thumb { background: rgba(178,34,34,0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(178,34,34,0.55); }
+
+/* ══════════════════════════════════════════════════════════
+   단청(丹靑) 장식 테두리 패턴
+   ══════════════════════════════════════════════════════════ */
+.border-dancheong {
+  border-image: repeating-linear-gradient(
+    90deg,
+    #B22222 0px, #B22222 4px,
+    #C9952A 4px, #C9952A 8px,
+    #2D6B5A 8px, #2D6B5A 12px,
+    #C9952A 12px, #C9952A 16px,
+    #B22222 16px, #B22222 20px
+  ) 2;
+}
+
+/* ══════════════════════════════════════════════════════════
+   홍살문(紅箭門) — 상단 장식 게이트
+   ══════════════════════════════════════════════════════════ */
+.hongsalmun-bar {
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #8B1717 5%,
+    #B22222 15%,
+    #C9952A 30%,
+    #B22222 50%,
+    #C9952A 70%,
+    #B22222 85%,
+    #8B1717 95%,
+    transparent 100%
+  );
+}
