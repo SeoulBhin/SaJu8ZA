@@ -73,18 +73,12 @@ export default function BirthForm() {
     }
 
     try {
-      const res = await fetch('/api/calculate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input),
-      })
+      const { calculate } = await import('@/lib/saju/calculator')
+      const { interpret } = await import('@/lib/saju/interpreter')
 
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || '계산 중 오류가 발생했습니다.')
-      }
-
-      const result = await res.json()
+      const base = calculate(input)
+      const cards = interpret(base)
+      const result = { ...base, cards }
 
       // 결과를 sessionStorage에 저장
       sessionStorage.setItem('saju_result', JSON.stringify(result))

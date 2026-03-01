@@ -54,20 +54,18 @@ function ResultContent() {
         } catch { /* 손상된 데이터 무시 */ }
       }
 
-      // 2. URL param 에서 입력값 디코딩 → API 재호출 (공유 링크 수신 시)
+      // 2. URL param 에서 입력값 디코딩 → 클라이언트 사이드 계산 (공유 링크 수신 시)
       const d = searchParams.get('d')
       if (d) {
         try {
           const input = decodeInput(d)
-          const res = await fetch('/api/calculate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(input),
-          })
-          if (!res.ok) throw new Error()
-          const data = await res.json()
+          const { calculate } = await import('@/lib/saju/calculator')
+          const { interpret } = await import('@/lib/saju/interpreter')
+          const base = calculate(input)
+          const cards = interpret(base)
+          const data = { ...base, cards }
           sessionStorage.setItem('saju_result', JSON.stringify(data))
-          setResult(data)
+          setResult(data as SajuResult)
         } catch {
           setLinkError('공유 링크가 올바르지 않습니다. 홈으로 이동합니다.')
           setTimeout(() => router.replace('/'), 2500)
