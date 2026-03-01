@@ -1,6 +1,8 @@
 # SaJu8ZA · 사주팔자
 
 > 생년월일과 태어난 시간으로 나의 사주팔자와 오행 기운을 알아보는 한국 전통 사주 서비스
+>
+> https://seoulbhin.github.io/SaJu8ZA/
 
 ## 주요 기능
 
